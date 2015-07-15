@@ -3,8 +3,6 @@
 (function(window, $, _, undefined) {
   'use strict';
 
-  console.log('Hello, ebi interaction table app!');
-
   var appContext = $('[data-app-name="ebi-interaction-table-app"]');
 
   window.addEventListener('Agave::ready', function() {
@@ -73,7 +71,7 @@
                                                         'showAll': 'Show all',
                                                         'showNone': 'Show none'}
                                               );
-        $(colvis.button()).insertBefore('div.result');
+        $('div.result').prepend(colvis.button());
     };
 
     $('#ebi_tv_gene_form_reset').on('click', function () {
