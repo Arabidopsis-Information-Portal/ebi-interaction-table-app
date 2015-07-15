@@ -1,0 +1,24 @@
+<div class="science-app" data-app-name="ebi-interaction-table-app">
+  <div id="ebi_tv">
+    <h3>Enter a gene name to see a table of protein-protein interactions</h3>
+    <p>Query (Any gene name or AGI ID, e.g. ASK1, AT1G10940, AT3G62980):</p>
+    <form name="ebi_tv_gene_form" class="form-inline">
+      <label for="ebi_tv_gene" class="sr-only">Gene name or AGI ID</label>
+      <input type="text" name="ebi_tv_gene" id="ebi_tv_gene" value="AT3G62980" class="form-control" placeholder="Gene name or AGI ID"/>
+
+      <button type="submit" class="btn btn-success">Submit</button>
+      <button type="button" class="btn btn-danger" id="ebi_tv_gene_form_reset">Clear</button>
+    </form>
+
+    <div class="result"></div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <p>
+          Data &amp; web services provided by
+          <a href="http://www.ebi.ac.uk/intact/" target="_blank">EMBL-EBI IntAct</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

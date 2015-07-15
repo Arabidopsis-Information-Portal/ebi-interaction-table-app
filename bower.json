@@ -1,0 +1,10 @@
+{
+  "name": "ebi-interaction-table-app",
+  "private": true,
+  "dependencies": {
+    "datatables": "~1.10.7",
+    "datatables-bootstrap3": "*",
+    "datatables-colvis": "~1.1.2",
+    "underscore": "~1.8.3"
+  }
+}
