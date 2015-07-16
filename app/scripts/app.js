@@ -29,20 +29,72 @@
                                 '</tr></thead><tbody>' +
                                 '<% _.each(result, function(r) { %>' +
                                 '<tr>' +
-                                '<td><%= r.interaction_record.unique_identifier_for_interactor_a %></td>' +
-                                '<td><%= r.interaction_record.unique_identifier_for_interactor_b %></td>' +
-                                '<td><%= r.interaction_record.alt_identifier_for_interactor_a %></td>' +
-                                '<td><%= r.interaction_record.alt_identifier_for_interactor_b %></td>' +
-                                '<td><%= r.interaction_record.aliases_for_a %></td>' +
-                                '<td><%= r.interaction_record.aliases_for_b %></td>' +
-                                '<td><%= r.interaction_record.interaction_detection_methods %></td>' +
+                                '<td><a href="<%= r.interaction_record.unique_identifier_for_interactor_a[0].url %>" target="_blank"><%= r.interaction_record.unique_identifier_for_interactor_a[0].id %><i class="fa fa-external-link"></i></a></td>' +
+                                '<td><a href="<%= r.interaction_record.unique_identifier_for_interactor_b[0].url %>" target="_blank"><%= r.interaction_record.unique_identifier_for_interactor_b[0].id %><i class="fa fa-external-link"></i></a></td>' +
+                                '<td>' +
+                                '<% _.each(r.interaction_record.alt_identifier_for_interactor_a, function(a) { %>' +
+                                '<%= a.id %>, ' +
+                                '<% }) %>' +
+                                '</td>' +
+                                '<td>' +
+                                '<% _.each(r.interaction_record.alt_identifier_for_interactor_b, function(b) { %>' +
+                                '<%= b.id %>, ' +
+                                '<% }) %>' +
+                                '</td>' +
+                                '<td>' +
+                                '<% _.each(r.interaction_record.aliases_for_a, function(a) { %>' +
+                                '<%= a.id %>, ' +
+                                '<% }) %>' +
+                                '</td>' +
+                                '<td>' +
+                                '<% _.each(r.interaction_record.aliases_for_b, function(b) { %>' +
+                                '<%= b.id %>, ' +
+                                '<% }) %>' +
+                                '</td>' +
+                                '<td>' +
+                                '<% _.each(r.interaction_record.interaction_detection_methods, function(i) { %>' +
+                                '<a href="<%= i.url %>" target="_blank"><%= i.desc %><i class="fa fa-external-link"></i></a><br/>' +
+                                '<% }) %>' +
+                                '</td>' +
                                 '<td><%= r.interaction_record.first_author %></td>' +
-                                '<td><%= r.interaction_record.publication_identifier %></td>' +
-                                '<td><%= r.interaction_record.ncbi_tax_identifier_for_interactor_a %></td>' +
-                                '<td><%= r.interaction_record.ncbi_tax_identifier_for_interactor_b %></td>' +
-                                '<td><%= r.interaction_record.interaction_types %></td>' +
-                                '<td><%= r.interaction_record.source_databases %></td>' +
-                                '<td><%= r.interaction_record.interaction_identifiers_in_source %></td>' +
+                                '<td>' +
+                                '<% _.each(r.interaction_record.publication_identifier, function(p) { %>' +
+                                '<% if (p.url.indexOf("http") == 0) { %>' +
+                                '<a href="<%= p.url %>" target="_blank"><%= p.desc %><i class="fa fa-external-link"></i></a><br/>' +
+                                '<% } else { %>' +
+                                '<%= p.desc %><br/>' +
+                                '<% } %>' +
+                                '<% }) %>' +
+                                '</td>' +
+                                '<td>' +
+                                '<% _.each(r.interaction_record.ncbi_tax_identifier_for_interactor_a, function(n) { %>' +
+                                '<a href="<%= n.url %>" target="_blank"><%= n.desc %><i class="fa fa-external-link"></i></a><br/>' +
+                                '<% }) %>' +
+                                '</td>' +
+                                '<td>' +
+                                '<% _.each(r.interaction_record.ncbi_tax_identifier_for_interactor_b, function(n) { %>' +
+                                '<a href="<%= n.url %>" target="_blank"><%= n.desc %><i class="fa fa-external-link"></i></a><br/>' +
+                                '<% }) %>' +
+                                '</td>' +
+                                '<td>' +
+                                '<% _.each(r.interaction_record.interaction_types, function(i) { %>' +
+                                '<a href="<%= i.url %>" target="_blank"><%= i.desc %><i class="fa fa-external-link"></i></a><br/>' +
+                                '<% }) %>' +
+                                '</td>' +
+                                '<td>' +
+                                '<% _.each(r.interaction_record.source_databases, function(s) { %>' +
+                                '<a href="<%= s.url %>" target="_blank"><%= s.desc %><i class="fa fa-external-link"></i></a><br/>' +
+                                '<% }) %>' +
+                                '</td>' +
+                                '<td>' +
+                                '<% _.each(r.interaction_record.interaction_identifiers_in_source, function(i) { %>' +
+                                '<% if (i.url.indexOf("http") == 0) { %>' +
+                                '<a href="<%= i.url %>" target="_blank"><%= i.desc %><i class="fa fa-external-link"></i></a><br/>' +
+                                '<% } else { %>' +
+                                '<%= i.desc %><br/>' +
+                                '<% } %>' +
+                                '<% }) %>' +
+                                '</td>' +
                                 '<td><%= r.interaction_record.confidence_score %></td>' +
                                 '</tr>' +
                                 '<% }) %>' +
