@@ -103,6 +103,7 @@
     };
 
     var showError = function(err) {
+        $('.ebi_tv_progress', appContext).addClass('hidden');
         $('.error', appContext).html('<div class="alert alert-danger">Error contacting the server! Please try again later.</div>');
         console.error('Status: ' + err.obj.status + '  Message: ' + err.obj.message);
     };
@@ -113,17 +114,24 @@
             return;
         }
 
+        $('.ebi_tv_progress', appContext).addClass('hidden');
         $('.result', appContext).html(templates.resultTable(json.obj));
         var iTable = $('.result table', appContext).DataTable({'lengthMenu': [10, 25, 50, 100],
-                                                               'columnDefs': [{
-                                                                   'targets': [2,3,7,8,12,13],
-                                                                   'visible': false}],
-                                                              });
+                                                           'columnDefs': [{
+                                                           'targets': [2,3,7,8,12,13],
+                                                           'visible': false}],
+                                                          });
         var colvis = new $.fn.dataTable.ColVis(iTable, {'restore': 'Restore',
                                                         'showAll': 'Show all',
                                                         'showNone': 'Show none'}
                                               );
-        $('div.result').prepend(colvis.button());
+        $('div.result', appContext).prepend('<button name="export" class="btn btn-default export-button">Export</button>');
+        $('div.result', appContext).prepend(colvis.button());
+
+        $('button[name=export]', appContext).on('click', function (e) {
+            e.preventDefault();
+            console.log('There are ' + iTable.data().length + ' row(s) of data in this table!');
+        });
     };
 
     $('#ebi_tv_gene_form_reset').on('click', function () {
@@ -141,6 +149,7 @@
 
           $('.result', appContext).empty();
           $('.error', appContext).empty();
+          $('.ebi_tv_progress', appContext).removeClass('hidden');
           Agave.api.adama.search({
               'namespace': 'eriksf-dev',
               'service': 'ebi_intact_by_locus_v0.1',
