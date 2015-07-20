@@ -149,8 +149,8 @@
             } catch (e) {
                     $('.error', appContext).html('<div class="alert alert-danger">Sorry, your browser does not support this feature. Please upgrade to a more modern browser.</div>');
             }
-            var filename = 'ebi-intact-for-id.csv';
-            var blob = new Blob([ts_content], {type: 'text/csv;charset=utf-8'});
+            var filename = 'ebi-intact-for-id.txt';
+            var blob = new Blob([ts_content], {type: 'text/plain;charset=utf-8'});
             window.saveAs(blob, filename);
         });
     };
