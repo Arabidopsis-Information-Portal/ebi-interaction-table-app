@@ -131,7 +131,14 @@
         $('button[name=export]', appContext).on('click', function (e) {
             e.preventDefault();
             console.log('There are ' + iTable.data().length + ' row(s) of data in this table!');
+
             var ts_content = '';
+            // get table headers
+            iTable.columns().every(function() {
+                ts_content += $(this.header()).text() + '\t';
+            });
+            ts_content += '\n';
+            // get table data
             iTable.rows().every(function() {
                 var d = this.data();
                 for(var i=0;i<d.length;i++) {
@@ -149,7 +156,7 @@
             } catch (e) {
                     $('.error', appContext).html('<div class="alert alert-danger">Sorry, your browser does not support this feature. Please upgrade to a more modern browser.</div>');
             }
-            var filename = 'ebi-intact-for-id.txt';
+            var filename = 'ebi-intact-results-for-' + $('#ebi_tv_gene', appContext).val() + '.txt';
             var blob = new Blob([ts_content], {type: 'text/plain;charset=utf-8'});
             window.saveAs(blob, filename);
         });
