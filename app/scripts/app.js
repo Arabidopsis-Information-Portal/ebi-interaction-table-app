@@ -131,6 +131,27 @@
         $('button[name=export]', appContext).on('click', function (e) {
             e.preventDefault();
             console.log('There are ' + iTable.data().length + ' row(s) of data in this table!');
+            var ts_content = '';
+            iTable.rows().every(function() {
+                var d = this.data();
+                for(var i=0;i<d.length;i++) {
+                    var t = $($.parseHTML(d[i])).text();
+                    ts_content += t + '\t';
+                }
+                ts_content += '\n';
+            });
+
+            try {
+                var isFileSaverSupported = !!new Blob();
+                if (!isFileSaverSupported) {
+                    $('.error', appContext).html('<div class="alert alert-danger">Sorry, your browser does not support this feature. Please upgrade to a more modern browser.</div>');
+                }
+            } catch (e) {
+                    $('.error', appContext).html('<div class="alert alert-danger">Sorry, your browser does not support this feature. Please upgrade to a more modern browser.</div>');
+            }
+            var filename = 'ebi-intact-for-id.csv';
+            var blob = new Blob([ts_content], {type: 'text/csv;charset=utf-8'});
+            window.saveAs(blob, filename);
         });
     };
 
