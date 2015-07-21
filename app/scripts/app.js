@@ -156,9 +156,21 @@
             } catch (e) {
                     $('.error', appContext).html('<div class="alert alert-danger">Sorry, your browser does not support this feature. Please upgrade to a more modern browser.</div>');
             }
-            var filename = 'ebi-intact-results-for-' + $('#ebi_tv_gene', appContext).val() + '.txt';
+            var clean_locus = $.trim($('#ebi_tv_gene', appContext).val()).replace(/[^a-zA-Z0-9-_]/gi, '');
+            var filename = 'ebi-intact-results-for-' + clean_locus + '.txt';
             var blob = new Blob([ts_content], {type: 'text/plain;charset=utf-8'});
             window.saveAs(blob, filename);
+            /*
+            var filename = 'ebi-intact-results-for-' + $('#ebi_tv_gene', appContext).val() + '.txt';
+            var form = $('<form>').attr({action: 'http://www.jcvi.org/arabidopsis/databounce.php',
+                                         method: 'POST'});
+            form.append($('<input>').attr({name: 'filename', value: filename}));
+            form.append($('<input>').attr({name: 'content_type', value: 'text/plain;charset=utf-8'}));
+            form.append($('<input>').attr({name: 'content', value: ts_content}));
+            form.appendTo($('body'));
+            form.submit();
+            window.setTimeout(function() {form.remove();}, 10000);
+            */
         });
     };
 
