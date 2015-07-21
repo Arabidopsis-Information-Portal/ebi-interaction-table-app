@@ -29,8 +29,8 @@
                                 '</tr></thead><tbody>' +
                                 '<% _.each(result, function(r) { %>' +
                                 '<tr>' +
-                                '<td><a href="<%= r.interaction_record.unique_identifier_for_interactor_a[0].url %>" target="_blank"><%= r.interaction_record.unique_identifier_for_interactor_a[0].id %><i class="fa fa-external-link"></i></a></td>' +
-                                '<td><a href="<%= r.interaction_record.unique_identifier_for_interactor_b[0].url %>" target="_blank"><%= r.interaction_record.unique_identifier_for_interactor_b[0].id %><i class="fa fa-external-link"></i></a></td>' +
+                                '<td><a href="<%= r.interaction_record.unique_identifier_for_interactor_a[0].url %>" target="_blank"><%= r.interaction_record.unique_identifier_for_interactor_a[0].id %> <i class="fa fa-external-link"></i></a></td>' +
+                                '<td><a href="<%= r.interaction_record.unique_identifier_for_interactor_b[0].url %>" target="_blank"><%= r.interaction_record.unique_identifier_for_interactor_b[0].id %> <i class="fa fa-external-link"></i></a></td>' +
                                 '<td>' +
                                 '<% _.each(r.interaction_record.alt_identifier_for_interactor_a, function(a) { %>' +
                                 '<%= a.id %>, ' +
@@ -43,24 +43,32 @@
                                 '</td>' +
                                 '<td>' +
                                 '<% _.each(r.interaction_record.aliases_for_a, function(a) { %>' +
+                                '<% if (a.url.indexOf("http") == 0) { %>' +
+                                '<a href="<%= a.url %>" target="_blank"><%= a.id %> <i class="fa fa-external-link"></i></a>,' +
+                                '<% } else { %>' +
                                 '<%= a.id %>, ' +
+                                '<% } %>' +
                                 '<% }) %>' +
                                 '</td>' +
                                 '<td>' +
                                 '<% _.each(r.interaction_record.aliases_for_b, function(b) { %>' +
+                                '<% if (b.url.indexOf("http") == 0) { %>' +
+                                '<a href="<%= b.url %>" target="_blank"><%= b.id %> <i class="fa fa-external-link"></i></a>,' +
+                                '<% } else { %>' +
                                 '<%= b.id %>, ' +
+                                '<% } %>' +
                                 '<% }) %>' +
                                 '</td>' +
                                 '<td>' +
                                 '<% _.each(r.interaction_record.interaction_detection_methods, function(i) { %>' +
-                                '<a href="<%= i.url %>" target="_blank"><%= i.desc %><i class="fa fa-external-link"></i></a><br/>' +
+                                '<a href="<%= i.url %>" target="_blank"><%= i.desc %> <i class="fa fa-external-link"></i></a><br/>' +
                                 '<% }) %>' +
                                 '</td>' +
                                 '<td><%= r.interaction_record.first_author %></td>' +
                                 '<td>' +
                                 '<% _.each(r.interaction_record.publication_identifier, function(p) { %>' +
                                 '<% if (p.url.indexOf("http") == 0) { %>' +
-                                '<a href="<%= p.url %>" target="_blank"><%= p.desc %><i class="fa fa-external-link"></i></a><br/>' +
+                                '<a href="<%= p.url %>" target="_blank"><%= p.desc %> <i class="fa fa-external-link"></i></a><br/>' +
                                 '<% } else { %>' +
                                 '<%= p.desc %><br/>' +
                                 '<% } %>' +
@@ -68,28 +76,28 @@
                                 '</td>' +
                                 '<td>' +
                                 '<% _.each(r.interaction_record.ncbi_tax_identifier_for_interactor_a, function(n) { %>' +
-                                '<a href="<%= n.url %>" target="_blank"><%= n.desc %><i class="fa fa-external-link"></i></a><br/>' +
+                                '<a href="<%= n.url %>" target="_blank"><%= n.desc %> <i class="fa fa-external-link"></i></a><br/>' +
                                 '<% }) %>' +
                                 '</td>' +
                                 '<td>' +
                                 '<% _.each(r.interaction_record.ncbi_tax_identifier_for_interactor_b, function(n) { %>' +
-                                '<a href="<%= n.url %>" target="_blank"><%= n.desc %><i class="fa fa-external-link"></i></a><br/>' +
+                                '<a href="<%= n.url %>" target="_blank"><%= n.desc %> <i class="fa fa-external-link"></i></a><br/>' +
                                 '<% }) %>' +
                                 '</td>' +
                                 '<td>' +
                                 '<% _.each(r.interaction_record.interaction_types, function(i) { %>' +
-                                '<a href="<%= i.url %>" target="_blank"><%= i.desc %><i class="fa fa-external-link"></i></a><br/>' +
+                                '<a href="<%= i.url %>" target="_blank"><%= i.desc %> <i class="fa fa-external-link"></i></a><br/>' +
                                 '<% }) %>' +
                                 '</td>' +
                                 '<td>' +
                                 '<% _.each(r.interaction_record.source_databases, function(s) { %>' +
-                                '<a href="<%= s.url %>" target="_blank"><%= s.desc %><i class="fa fa-external-link"></i></a><br/>' +
+                                '<a href="<%= s.url %>" target="_blank"><%= s.desc %> <i class="fa fa-external-link"></i></a><br/>' +
                                 '<% }) %>' +
                                 '</td>' +
                                 '<td>' +
                                 '<% _.each(r.interaction_record.interaction_identifiers_in_source, function(i) { %>' +
                                 '<% if (i.url.indexOf("http") == 0) { %>' +
-                                '<a href="<%= i.url %>" target="_blank"><%= i.desc %><i class="fa fa-external-link"></i></a><br/>' +
+                                '<a href="<%= i.url %>" target="_blank"><%= i.desc %> <i class="fa fa-external-link"></i></a><br/>' +
                                 '<% } else { %>' +
                                 '<%= i.desc %><br/>' +
                                 '<% } %>' +
@@ -191,8 +199,8 @@
           $('.error', appContext).empty();
           $('.ebi_tv_progress', appContext).removeClass('hidden');
           Agave.api.adama.search({
-              'namespace': 'eriksf-dev',
-              'service': 'ebi_intact_by_locus_v0.1',
+              'namespace': 'aip',
+              'service': 'ebi_intact_by_locus_v0.2',
               'queryParams': query
           }, showResults, showError);
       });
