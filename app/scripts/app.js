@@ -126,7 +126,7 @@
         $('.result', appContext).html(templates.resultTable(json.obj));
         var iTable = $('.result table', appContext).DataTable({'lengthMenu': [10, 25, 50, 100],
                                                            'columnDefs': [{
-                                                           'targets': [2,3,7,8,12,13],
+                                                           'targets': [2,3,7,9,10,12],
                                                            'visible': false}],
                                                           });
         var colvis = new $.fn.dataTable.ColVis(iTable, {'restore': 'Restore',
