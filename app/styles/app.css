@@ -68,3 +68,17 @@ button.export-button::-moz-focus-inner {
 button.export-button:active {
 	outline: none;
 }
+
+#ebi_tv_cy {
+  height: 600px;
+  padding: 0;
+}
+#ebi_tv_cy_wrapper {
+  position: relative;
+}
+#ebi_tv_tooltip {
+    position: absolute;
+    width: auto;
+    height: auto;
+    z-index: 1;
+}
