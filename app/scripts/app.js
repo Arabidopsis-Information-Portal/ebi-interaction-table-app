@@ -198,6 +198,7 @@
             return;
         }
 
+        $('.ebi_tv_progress', appContext).addClass('hidden');
         var view = assignViewOptions(json.obj);
         renderCytoscape(view);
         renderLegend(view.keyInfo);
