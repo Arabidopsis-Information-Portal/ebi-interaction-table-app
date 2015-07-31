@@ -444,6 +444,7 @@
               locus: this.ebi_tv_gene.value,
           };
 
+          $('a[href="#d_graph"]').tab('show');
           $('.ebi_tv_table_result', appContext).empty();
           $('.ebi_tv_graph_result', appContext).empty();
           $('.error', appContext).empty();
