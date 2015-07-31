@@ -131,6 +131,8 @@
 
     var showError = function(err) {
         $('.ebi_tv_progress', appContext).addClass('hidden');
+        $('.ebi_tv_table_progress', appContext).addClass('hidden');
+        $('.ebi_tv_graph_progress', appContext).addClass('hidden');
         $('.error', appContext).html('<div class="alert alert-danger">Error contacting the server! Please try again later.</div>');
         console.error('Status: ' + err.obj.status + '  Message: ' + err.obj.message);
     };
@@ -449,14 +451,14 @@
           $('.ebi_tv_graph_progress', appContext).removeClass('hidden');
           $('.ebi_tv_progress', appContext).removeClass('hidden');
           Agave.api.adama.search({
-              'namespace': 'aip',
-              'service': 'ebi_intact_by_locus_v0.2',
+              'namespace': 'eriksf-dev',
+              'service': 'ebi_intact_by_locus_v0.3',
               'queryParams': query
           }, showTableResults, showError);
 
           Agave.api.adama.search({
               'namespace': 'eriksf-dev',
-              'service': 'ebi_intact_cytoscape_by_locus_v0.2',
+              'service': 'ebi_intact_cytoscape_by_locus_v0.4',
               'queryParams': query
           }, showGraphResults, showError);
       });
