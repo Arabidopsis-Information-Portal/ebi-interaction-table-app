@@ -210,22 +210,25 @@
         var colors, experiments, colorsused, fontSize, i, j, k, m, found;
 
         for ( m = 0; m < elements.edges.length; m++ ) {
+            elements.edges[m].data.lineStyle = 'solid';
             if ( elements.edges[m].data.confidence_score !== '-' ) {
                 if ( elements.edges[m].data.confidence_score < 0.30 ) {
                     elements.edges[m].data.lineThickness = 1;
+                    elements.edges[m].data.lineStyle = 'dashed';
                 } else if ( elements.edges[m].data.confidence_score >= 0.30 && elements.edges[m].data.confidence_score < 0.40 ) {
-                    elements.edges[m].data.lineThickness = 3;
+                    elements.edges[m].data.lineThickness = 2;
                 } else if ( elements.edges[m].data.confidence_score >= 0.40 && elements.edges[m].data.confidence_score < 0.50 ) {
-                    elements.edges[m].data.lineThickness = 6;
+                    elements.edges[m].data.lineThickness = 3;
                 } else if ( elements.edges[m].data.confidence_score >= 0.50 && elements.edges[m].data.confidence_score < 0.60 ) {
-                    elements.edges[m].data.lineThickness = 9;
+                    elements.edges[m].data.lineThickness = 4;
                 } else if ( elements.edges[m].data.confidence_score >= 0.60 && elements.edges[m].data.confidence_score < 0.70 ) {
-                    elements.edges[m].data.lineThickness = 11;
+                    elements.edges[m].data.lineThickness = 5;
                 } else if ( elements.edges[m].data.confidence_score >= 0.70 ) {
-                    elements.edges[m].data.lineThickness = 15;
+                    elements.edges[m].data.lineThickness = 6;
                 }
             } else {
                 elements.edges[m].data.lineThickness = 1;
+                elements.edges[m].data.lineStyle = 'dashed';
             }
         }
 
@@ -337,6 +340,7 @@
             .selector('edge')
                 .css({
                     'line-color': 'data(lineColor)',
+                    'line-style': 'data(lineStyle)',
                     'width': 'data(lineThickness)'
                 })
             .selector(':selected')
