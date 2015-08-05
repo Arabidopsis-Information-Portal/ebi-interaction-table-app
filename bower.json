@@ -7,6 +7,6 @@
     "datatables-colvis": "~1.1.2",
     "underscore": "~1.8.3",
     "FileSaver.js": "Arabidopsis-Information-Portal/FileSaver.js",
-    "cytoscape": "~2.4.4"
+    "cytoscape": "~2.4.5"
   }
 }

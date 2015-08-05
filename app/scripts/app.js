@@ -204,6 +204,196 @@
         var view = assignViewOptions(json.obj);
         renderCytoscape(view);
         renderLegend(view.keyInfo);
+        renderButtons();
+    };
+
+    var renderLegend = function renderLegend(keyInfo) {
+       var experiments, colorsused, key, i, ul;
+
+       experiments = keyInfo.experiments;
+       colorsused = keyInfo.colorsused;
+       key = $('#ebi_tv_colors', appContext);
+       key.empty();
+       key.append('<h5>Interaction determination by line color</h5>');
+       ul = $('<ul>');
+       for ( i = 0; i < experiments.length; i++ ) {
+           ul.append('<li style="color:' + colorsused[i] + '">' + experiments[i] + '</li>');
+       }
+       key.append(ul);
+   };
+
+   var resetButtonBar = function resetButtonBar() {
+        var label_button = $('button[name=labelButton]', appContext);
+        label_button.data('label', 'locus');
+        label_button.html('<i class="fa fa-tags fa-fw"></i>&nbsp; Locus');
+        var vtext_button = $('button[name=verticalTextAlignButton]', appContext);
+        vtext_button.data('label', 'top');
+        vtext_button.html('<i class="fa fa-text-height fa-fw"></i>&nbsp; Top');
+        var htext_button = $('button[name=horizontalTextAlignButton]', appContext);
+        htext_button.data('label', 'center');
+        htext_button.html('<i class="fa fa-text-width fa-fw"></i>&nbsp; Center');
+        var node_button = $('button[name=viewNodeLabelButton]', appContext);
+        node_button.data('visible', 'true');
+        node_button.html('<i class="fa fa-check-square fa-fw"></i>&nbsp; Node Labels');
+        var edge_button = $('button[name=viewEdgeLabelButton]', appContext);
+        edge_button.data('visible', 'false');
+        edge_button.html('<i class="fa fa-square fa-fw"></i>&nbsp; Edge Labels');
+   };
+
+    var renderButtons = function renderButtons() {
+        $('#ebi_tv_buttons', appContext).removeClass('hidden');
+
+        $('#justified-button-bar .btn', appContext).tooltip({
+            placement: 'bottom',
+            container: 'body'});
+
+        // button to reset/redraw graph
+        $('button[name=resetButton]', appContext).on('click', function (e) {
+            e.preventDefault();
+            var cy = $('#ebi_tv_cy', appContext).cytoscape('get');
+            cy.load(cy.elements('*').jsons());
+
+            // also reset button toggles
+            resetButtonBar();
+        });
+
+        // button to toggle node labels between locus and id
+        $('button[name=labelButton]', appContext).on('click', function (e) {
+            e.preventDefault();
+            var el = $(this);
+            var current_label = el.data('label');
+            var new_label = '';
+            if (current_label === 'locus') {
+                new_label = 'name';
+                el.data('label', new_label);
+                el.html('<i class="fa fa-tags fa-fw"></i>&nbsp; ID');
+            } else if (current_label === 'name') {
+                new_label = 'locus';
+                el.data('label', new_label);
+                el.html('<i class="fa fa-tags fa-fw"></i>&nbsp; Locus');
+            }
+            var cy = $('#ebi_tv_cy', appContext).cytoscape('get');
+            cy.batch(function() {
+                cy.nodes().forEach(function(el){
+                    var label = el.data(new_label);
+                    el.css('content', label);
+                });
+            });
+        });
+
+        // button to change node label alignment between top, center, and bottom
+        $('button[name=verticalTextAlignButton]', appContext).on('click', function (e) {
+            e.preventDefault();
+            var el = $(this);
+            var current_label = el.data('label');
+            var new_label = '';
+            if (current_label === 'top') {
+                new_label = 'center';
+                el.data('label', new_label);
+                el.html('<i class="fa fa-text-height fa-fw"></i>&nbsp; Center');
+            } else if (current_label === 'center') {
+                new_label = 'bottom';
+                el.data('label', new_label);
+                el.html('<i class="fa fa-text-height fa-fw"></i>&nbsp; Bottom');
+            } else if (current_label === 'bottom') {
+                new_label = 'top';
+                el.data('label', new_label);
+                el.html('<i class="fa fa-text-height fa-fw"></i>&nbsp; Top');
+            }
+            var cy = $('#ebi_tv_cy', appContext).cytoscape('get');
+            cy.batch(function() {
+                cy.nodes().forEach(function(el){
+                    el.css('text-valign', new_label);
+                });
+            });
+        });
+
+        // button to change node label alignment between left, center, and right
+        $('button[name=horizontalTextAlignButton]', appContext).on('click', function (e) {
+            e.preventDefault();
+            var el = $(this);
+            var current_label = el.data('label');
+            var new_label = '';
+            if (current_label === 'center') {
+                new_label = 'left';
+                el.data('label', new_label);
+                el.html('<i class="fa fa-text-width fa-fw"></i>&nbsp; Left');
+            } else if (current_label === 'left') {
+                new_label = 'right';
+                el.data('label', new_label);
+                el.html('<i class="fa fa-text-width fa-fw"></i>&nbsp; Right');
+            } else if (current_label === 'right') {
+                new_label = 'center';
+                el.data('label', new_label);
+                el.html('<i class="fa fa-text-width fa-fw"></i>&nbsp; Center');
+            }
+            var cy = $('#ebi_tv_cy', appContext).cytoscape('get');
+            cy.batch(function() {
+                cy.nodes().forEach(function(el){
+                    el.css('text-halign', new_label);
+                });
+            });
+        });
+
+        $('button[name=viewNodeLabelButton]', appContext).on('click', function (e) {
+            e.preventDefault();
+            var el = $(this);
+            var view = el.data('visible');
+            if (view) {
+                el.data('visible', false);
+                el.html('<i class="fa fa-square fa-fw"></i>&nbsp; Node Labels');
+            } else {
+                el.data('visible', true);
+                el.html('<i class="fa fa-check-square fa-fw"></i>&nbsp; Node Labels');
+            }
+            var cy = $('#ebi_tv_cy', appContext).cytoscape('get');
+            cy.batch(function() {
+                cy.nodes().forEach(function(el){
+                    if (view) {
+                        el.css('color', '#fff');
+                        el.css('content', '-');
+                    } else {
+                        var label_val = $('button[name=labelButton]', appContext).data('label');
+                        el.css('color', '#000');
+                        el.css('content', el.data(label_val));
+                    }
+                });
+            });
+        });
+
+        $('button[name=viewEdgeLabelButton]', appContext).on('click', function (e) {
+            e.preventDefault();
+            var el = $(this);
+            var view = el.data('visible');
+            if (view) {
+                el.data('visible', false);
+                el.html('<i class="fa fa-square fa-fw"></i>&nbsp; Edge Labels');
+            } else {
+                el.data('visible', true);
+                el.html('<i class="fa fa-check-square fa-fw"></i>&nbsp; Edge Labels');
+            }
+            var cy = $('#ebi_tv_cy', appContext).cytoscape('get');
+            cy.batch(function() {
+                cy.edges().forEach(function(el){
+                    if (view) {
+                        el.css('content', '');
+                    } else {
+                        el.css('content', el.data('interaction_detection_method_desc'));
+                    }
+                });
+            });
+        });
+
+        $('#ebi_tv_legend', appContext).on('shown.bs.collapse', function (e) {
+            e.preventDefault();
+            var legend_button = $('button[name=legendButton]', appContext);
+            legend_button.html('<i class="fa fa-check-square fa-fw"></i>&nbsp; Legend');
+        });
+        $('#ebi_tv_legend', appContext).on('hidden.bs.collapse', function (e) {
+            e.preventDefault();
+            var legend_button = $('button[name=legendButton]', appContext);
+            legend_button.html('<i class="fa fa-square fa-fw"></i>&nbsp; Legend');
+        });
     };
 
     var assignViewOptions = function assignViewOptions(elements) {
@@ -394,22 +584,6 @@
         }); //end Cytoscape object options
     }; //end render()
 
-    var renderLegend = function renderLegend(keyInfo) {
-        var experiments, colorsused, key, i, ul;
-
-        experiments = keyInfo.experiments;
-        colorsused = keyInfo.colorsused;
-        key = $('#ebi_tv_colors');
-        key.empty();
-        key.append('<h5>Interaction determination by line color</h5>');
-        ul = $('<ul>');
-        for ( i = 0; i < experiments.length; i++ ) {
-            ul.append('<li style="color:' + colorsused[i] + '">' + experiments[i] + '</li>');
-        }
-        key.append(ul);
-        $('#ebi_tv_legend').removeClass('hidden');
-    };
-
     var getEdgeInfo = function getEdgeInfo(target) {
       // var sourceName = target.data('source');
       // var targetName = target.data('target');
@@ -434,11 +608,11 @@
         $('.error', appContext).empty();
         $('#ebi_tv_gene', appContext).val('');
         $('.ebi_tv_table_result', appContext).empty();
-        $('.ebi_tv_graph_result', appContext).empty();
-        $('#ebi_tv_cy').addClass('hidden');
-        $('#ebi_tv_legend').addClass('hidden');
-        $('#ebi_tv_colors').empty();
-        $('#ebi_tv_tooltip').empty();
+        $('#ebi_tv_cy', appContext).addClass('hidden');
+        $('#ebi_tv_buttons', appContext).addClass('hidden');
+        resetButtonBar();
+        $('#ebi_tv_tooltip', appContext).empty();
+        $('#ebi_tv_colors', appContext).empty();
       });
 
       $('form[name=ebi_tv_gene_form]').on('submit', function (e) {
@@ -450,11 +624,11 @@
 
           $('a[href="#d_graph"]').tab('show');
           $('.ebi_tv_table_result', appContext).empty();
-          $('.ebi_tv_graph_result', appContext).empty();
           $('.error', appContext).empty();
           $('.ebi_tv_table_progress', appContext).removeClass('hidden');
           $('.ebi_tv_graph_progress', appContext).removeClass('hidden');
           $('.ebi_tv_progress', appContext).removeClass('hidden');
+          resetButtonBar();
           Agave.api.adama.search({
               'namespace': 'eriksf-dev',
               'service': 'ebi_intact_by_locus_v0.3',
