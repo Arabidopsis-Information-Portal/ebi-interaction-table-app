@@ -179,19 +179,23 @@
                 ts_content += '\n';
             });
 
-            try {
-                var isFileSaverSupported = !!new Blob();
-                if (!isFileSaverSupported) {
-                    $('.error', appContext).html('<div class="alert alert-danger">Sorry, your browser does not support this feature. Please upgrade to a more modern browser.</div>');
-                }
-            } catch (e) {
-                    $('.error', appContext).html('<div class="alert alert-danger">Sorry, your browser does not support this feature. Please upgrade to a more modern browser.</div>');
-            }
             var clean_locus = $.trim($('#ebi_tv_gene', appContext).val()).replace(/[^a-zA-Z0-9-_]/gi, '');
             var filename = 'ebi-intact-results-for-' + clean_locus + '.txt';
-            var blob = new Blob([ts_content], {type: 'text/plain;charset=utf-8'});
-            window.saveAs(blob, filename);
+            saveAsFile(ts_content, 'text/plain;charset=utf-8', filename);
         });
+    };
+
+    var saveAsFile = function saveAsFile(content, filetype, filename) {
+        try {
+            var isFileSaverSupported = !!new Blob();
+            if (!isFileSaverSupported) {
+                $('.error', appContext).html('<div class="alert alert-danger">Sorry, your browser does not support this feature. Please upgrade to a more modern browser.</div>');
+            }
+            var blob = new Blob([content], {type: filetype});
+            window.saveAs(blob, filename);
+        } catch (e) {
+            $('.error', appContext).html('<div class="alert alert-danger">Sorry, your browser does not support this feature. Please upgrade to a more modern browser.</div>');
+        }
     };
 
     var showGraphResults = function showGraphResults(json) {
@@ -204,7 +208,6 @@
         var view = assignViewOptions(json.obj);
         renderCytoscape(view);
         renderLegend(view.keyInfo);
-        renderButtons();
     };
 
     var renderLegend = function renderLegend(keyInfo) {
@@ -233,18 +236,16 @@
         htext_button.data('label', 'center');
         htext_button.html('<i class="fa fa-text-width fa-fw"></i>&nbsp; Center');
         var node_button = $('button[name=viewNodeLabelButton]', appContext);
-        node_button.data('visible', 'true');
+        node_button.data('visible', true);
         node_button.html('<i class="fa fa-check-square fa-fw"></i>&nbsp; Node Labels');
         var edge_button = $('button[name=viewEdgeLabelButton]', appContext);
-        edge_button.data('visible', 'false');
+        edge_button.data('visible', false);
         edge_button.html('<i class="fa fa-square fa-fw"></i>&nbsp; Edge Labels');
    };
 
-    var renderButtons = function renderButtons() {
-        $('#ebi_tv_buttons', appContext).removeClass('hidden');
-
+    var registerButtonBar = function registerButtonBar() {
         $('#justified-button-bar .btn', appContext).tooltip({
-            placement: 'bottom',
+            placement: 'top',
             container: 'body'});
 
         // button to reset/redraw graph
@@ -335,6 +336,7 @@
             });
         });
 
+        // button to toggle whether to show node labels
         $('button[name=viewNodeLabelButton]', appContext).on('click', function (e) {
             e.preventDefault();
             var el = $(this);
@@ -361,6 +363,7 @@
             });
         });
 
+        // button to toggle whether to show edge labels
         $('button[name=viewEdgeLabelButton]', appContext).on('click', function (e) {
             e.preventDefault();
             var el = $(this);
@@ -384,6 +387,7 @@
             });
         });
 
+        // button to show/hide the legend
         $('#ebi_tv_legend', appContext).on('shown.bs.collapse', function (e) {
             e.preventDefault();
             var legend_button = $('button[name=legendButton]', appContext);
@@ -393,6 +397,31 @@
             e.preventDefault();
             var legend_button = $('button[name=legendButton]', appContext);
             legend_button.html('<i class="fa fa-square fa-fw"></i>&nbsp; Legend');
+        });
+
+        // export the graph as a PNG image
+        $('a[href="#exportPNG"]', appContext).on('click', function (e) {
+            e.preventDefault();
+            console.log('Saving graph to PNG image.');
+            var cy = $('#ebi_tv_cy', appContext).cytoscape('get');
+            var clean_locus = $.trim($('#ebi_tv_gene', appContext).val()).replace(/[^a-zA-Z0-9-_]/gi, '');
+            var filename = 'ebi-intact-graph-for-' + clean_locus + '.png';
+            var image_data_uri = cy.png();
+            var image_data = image_data_uri.replace('data:image/png;base64,', '');
+            image_data = image_data.replace(' ', '+');
+            var decoded_image = window.atob(image_data);
+            saveAsFile(decoded_image, 'image/png', filename);
+        });
+
+        // export the graph data in JSON format
+        $('a[href="#exportJSON"]', appContext).on('click', function (e) {
+            e.preventDefault();
+            console.log('Saving graph data in JSON format.');
+
+            var cy = $('#ebi_tv_cy', appContext).cytoscape('get');
+            var clean_locus = $.trim($('#ebi_tv_gene', appContext).val()).replace(/[^a-zA-Z0-9-_]/gi, '');
+            var filename = 'ebi-intact-graph-for-' + clean_locus + '.json';
+            saveAsFile(JSON.stringify(cy.json()), 'application/json', filename);
         });
     };
 
@@ -482,7 +511,6 @@
                 }
             }
         }
-        console.log(JSON.stringify(elements));
 
         return {
             keyInfo: {
@@ -500,6 +528,7 @@
     */
     var renderCytoscape = function renderCytoscape(view) {
         $('#ebi_tv_cy').removeClass('hidden');
+        $('#ebi_tv_buttons', appContext).removeClass('hidden');
         $('#ebi_tv_cy').cytoscape({
             minZoom: 0.25,
             maxZoom: 4,
@@ -585,8 +614,6 @@
     }; //end render()
 
     var getEdgeInfo = function getEdgeInfo(target) {
-      // var sourceName = target.data('source');
-      // var targetName = target.data('target');
       var experiment = target.data('interaction_detection_method_desc');
       var CV = target.data('confidence_score');
       var publication = target.data('publication');
@@ -603,6 +630,8 @@
     };
 
     init();
+
+    registerButtonBar();
 
     $('#ebi_tv_gene_form_reset').on('click', function () {
         $('.error', appContext).empty();
@@ -622,7 +651,7 @@
               locus: this.ebi_tv_gene.value,
           };
 
-          $('a[href="#d_graph"]').tab('show');
+          $('a[href="#d_graph"]', appContext).tab('show');
           $('.ebi_tv_table_result', appContext).empty();
           $('.error', appContext).empty();
           $('.ebi_tv_table_progress', appContext).removeClass('hidden');

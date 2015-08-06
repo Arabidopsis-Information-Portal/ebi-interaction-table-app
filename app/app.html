@@ -68,12 +68,12 @@
 	        	                        </button>
                                     </div>
                         	        <div class="btn-group">
-	        	                        <button name="viewNodeLabelButton" title="Toggle node labels" type="button" class="btn btn-default" data-toggle="tooltip" data-visible="true">
+	        	                        <button name="viewNodeLabelButton" title="Toggle node labels" type="button" class="btn btn-default" data-toggle="tooltip" data-visible=true>
                     	        	    <i class="fa fa-check-square fa-fw"></i>&nbsp; Node Labels
 	        	                        </button>
                                     </div>
                         	        <div class="btn-group">
-	        	                        <button name="viewEdgeLabelButton" title="Toggle edge labels" type="button" class="btn btn-default" data-toggle="tooltip" data-visible="false">
+	        	                        <button name="viewEdgeLabelButton" title="Toggle edge labels" type="button" class="btn btn-default" data-toggle="tooltip" data-visible=false>
                     	        	    <i class="fa fa-square fa-fw"></i>&nbsp; Edge Labels
 	        	                        </button>
                                     </div>
@@ -81,6 +81,18 @@
 	        	                        <button name="legendButton" title="Show the legend" type="button" class="btn btn-default" data-toggle="collapse" data-target="#ebi_tv_legend">
                     	        	    <i class="fa fa-square fa-fw"></i>&nbsp; Legend
 	        	                        </button>
+                                    </div>
+                                    <div class="btn-group">
+                                        <div class="btn-group" role="group">
+                                            <button title="Export the graph as a PNG image or JSON data" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    	        	        <i class="fa fa-floppy-o fa-fw"></i>&nbsp; Export
+                                            <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#exportPNG">PNG</a></li>
+                                                <li><a href="#exportJSON">JSON</a></li>
+                                            </ul>
+                                        </div>
                                     </div>
 	                            </div>
                             </div>
