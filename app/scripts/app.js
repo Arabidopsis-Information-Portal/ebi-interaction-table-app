@@ -10,20 +10,41 @@
     var Agave = window.Agave;
 
     var init = function() {
-        var allScripts, i, arborURL, re;
+        var allScripts, i, arborURL, springyURL, foographURL, rhillURL, re, el;
         allScripts = document.querySelectorAll( 'script' );
         re = /^(.*)(\/cytoscape[^\/]*)\/(.*)cytoscape\.js??(.*)?$/;
-        for ( i = 0; i < allScripts.length && ! arborURL; i++ ) {
+        for ( i = 0; i < allScripts.length; i++ ) {
             if ( re.test( allScripts[i].src ) ) {
                 var match = re.exec( allScripts[i].src );
                 arborURL = match[1] + match[2] + '/lib/arbor.js';
+                springyURL = match[1] + match[2] + '/lib/springy.js';
+                foographURL = match[1] + match[2] + '/lib/foograph.js';
+                rhillURL = match[1] + match[2] + '/lib/rhill-voronoi-core.js';
             }
         }
-        if ( arborURL ) {
-            var el = document.createElement( 'script' );
+        if (arborURL) {
+            el = document.createElement( 'script' );
             el.src = arborURL;
             el.type = 'text/javascript';
             document.body.appendChild( el );
+        }
+        if (springyURL) {
+            el = document.createElement('script');
+            el.src = springyURL;
+            el.type = 'text/javascript';
+            document.body.appendChild(el);
+        }
+        if (foographURL) {
+            el = document.createElement('script');
+            el.src = foographURL;
+            el.type = 'text/javascript';
+            document.body.appendChild(el);
+        }
+        if (rhillURL) {
+            el = document.createElement('script');
+            el.src = rhillURL;
+            el.type = 'text/javascript';
+            document.body.appendChild(el);
         }
     };
 
@@ -404,13 +425,11 @@
             e.preventDefault();
             console.log('Saving graph to PNG image.');
             var cy = $('#ebi_tv_cy', appContext).cytoscape('get');
-            var clean_locus = $.trim($('#ebi_tv_gene', appContext).val()).replace(/[^a-zA-Z0-9-_]/gi, '');
-            var filename = 'ebi-intact-graph-for-' + clean_locus + '.png';
-            var image_data_uri = cy.png();
-            var image_data = image_data_uri.replace('data:image/png;base64,', '');
-            image_data = image_data.replace(' ', '+');
-            var decoded_image = window.atob(image_data);
-            saveAsFile(decoded_image, 'image/png', filename);
+            //var clean_locus = $.trim($('#ebi_tv_gene', appContext).val()).replace(/[^a-zA-Z0-9-_]/gi, '');
+            //var filename = 'ebi-intact-graph-for-' + clean_locus + '.png';
+            var image_data_uri = cy.png({'bg': 'white'});
+            var image_data = image_data_uri.replace('image/png', 'image/octet-stream');
+            window.location.href=image_data;
         });
 
         // export the graph data in JSON format
@@ -422,6 +441,87 @@
             var clean_locus = $.trim($('#ebi_tv_gene', appContext).val()).replace(/[^a-zA-Z0-9-_]/gi, '');
             var filename = 'ebi-intact-graph-for-' + clean_locus + '.json';
             saveAsFile(JSON.stringify(cy.json()), 'application/json', filename);
+        });
+
+        // change the layout of the graph to arbor
+        $('a[href="#layoutArbor"]', appContext).on('click', function (e) {
+            e.preventDefault();
+            var cy = $('#ebi_tv_cy', appContext).cytoscape('get');
+            cy.layout({
+                name: 'arbor',
+                liveUpdate: false,
+                fit: true,
+                animate: true,
+                maxSimulationTime: 200,
+                ungrabifyWhileSimulating: true,
+                stepSize: 0.1,
+                padding: [ 50, 50, 50, 50 ],
+                gravity: true,
+                stableEnergy: function(energy) {
+                    return (energy.max <= 0.5) || (energy.mean <= 0.3);
+                }
+            });
+        });
+
+        // change the layout of the graph to random
+        $('a[href="#layoutRandom"]', appContext).on('click', function (e) {
+            e.preventDefault();
+            var cy = $('#ebi_tv_cy', appContext).cytoscape('get');
+            cy.layout({name: 'random', fit: true, padding: 50, animate: true});
+        });
+
+        // change the layout of the graph to grid
+        $('a[href="#layoutGrid"]', appContext).on('click', function (e) {
+            e.preventDefault();
+            var cy = $('#ebi_tv_cy', appContext).cytoscape('get');
+            cy.layout({name: 'grid', fit: true, avoidOverlap: true, padding: 50, animate: true});
+        });
+
+        // change the layout of the graph to circle
+        $('a[href="#layoutCircle"]', appContext).on('click', function (e) {
+            e.preventDefault();
+            var cy = $('#ebi_tv_cy', appContext).cytoscape('get');
+            cy.layout({
+                name: 'circle',
+                fit: true,
+                avoidOverlap: true,
+                padding: 50,
+                animate: true,
+                startAngle: 3/2 * Math.PI});
+        });
+
+        // change the layout of the graph to springy
+        $('a[href="#layoutSpringy"]', appContext).on('click', function (e) {
+            e.preventDefault();
+            var cy = $('#ebi_tv_cy', appContext).cytoscape('get');
+            cy.layout({
+                name: 'springy',
+                fit: true,
+                animate: true,
+                maxSimulationTime: 500,
+                ungrabifyWhileSimulating: true,
+                padding: 50,
+                random: true,
+                stiffness: 400,
+                repulsion: 400,
+                damping: 0.5
+            });
+        });
+
+        // change the layout of the graph to spread
+        $('a[href="#layoutSpread"]', appContext).on('click', function (e) {
+            e.preventDefault();
+            var cy = $('#ebi_tv_cy', appContext).cytoscape('get');
+            cy.layout({
+                name: 'spread',
+                fit: true,
+                animate: true,
+                minDist: 30,
+                expandingFactor: -1.0,
+                padding: 50,
+                maxFruchtermanReingoldIterations: 50,
+                maxExpandIterations: 4
+            });
         });
     };
 
