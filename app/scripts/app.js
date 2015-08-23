@@ -166,7 +166,6 @@
 
         $('.ebi_tv_table_progress', appContext).addClass('hidden');
         $('.ebi_tv_graph_progress', appContext).addClass('hidden');
-        $('.ebi_tv_progress', appContext).addClass('hidden');
         $('.ebi_tv_table_result', appContext).html(templates.resultTable(json.obj));
         var iTable = $('.ebi_tv_table_result table', appContext).DataTable({'lengthMenu': [10, 25, 50, 100],
                                                            'columnDefs': [{
