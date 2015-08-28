@@ -150,17 +150,24 @@
                                 '</table>'),
     };
 
+    var errorMessage = function errorMessage(message) {
+        return '<div class="alert alert-danger fade in" role="alert">' +
+               '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
+               '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Error:</span> ' +
+               message + '</div>';
+    };
+
     var showError = function(err) {
         $('.ebi_tv_progress', appContext).addClass('hidden');
         $('.ebi_tv_table_progress', appContext).addClass('hidden');
         $('.ebi_tv_graph_progress', appContext).addClass('hidden');
-        $('.error', appContext).html('<div class="alert alert-danger">Error contacting the server! Please try again later.</div>');
+        $('.error', appContext).html(errorMessage('Error contacting the server! Please try again later.'));
         console.error('Status: ' + err.obj.status + '  Message: ' + err.obj.message);
     };
 
     var showTableResults = function showTableResults(json) {
         if ( ! (json && json.obj) || json.obj.status !== 'success') {
-            $('.error', appContext).html('<div class="alert alert-danger">Invalid response!</div>');
+            $('.error', appContext).html(errorMessage('Invalid response!'));
             return;
         }
 
@@ -176,10 +183,10 @@
                                                         'showAll': 'Show all',
                                                         'showNone': 'Show none'}
                                               );
-        $('div.ebi_tv_table_result', appContext).prepend('<button name="export" class="btn btn-default export-button">Export</button>');
+        $('div.ebi_tv_table_result', appContext).prepend('<a href="#exportCSV" class="export-button" role="button"><span>Export CSV</span></a>');
         $('div.ebi_tv_table_result', appContext).prepend(colvis.button());
 
-        $('button[name=export]', appContext).on('click', function (e) {
+        $('a[href="#exportCSV"]', appContext).on('click', function (e) {
             e.preventDefault();
             console.log('There are ' + iTable.data().length + ' row(s) of data in this table!');
 
@@ -209,18 +216,18 @@
         try {
             var isFileSaverSupported = !!new Blob();
             if (!isFileSaverSupported) {
-                $('.error', appContext).html('<div class="alert alert-danger">Sorry, your browser does not support this feature. Please upgrade to a more modern browser.</div>');
+                $('.error', appContext).html(errorMessage('Sorry, your browser does not support this feature. Please upgrade to a more modern browser.'));
             }
             var blob = new Blob([content], {type: filetype});
             window.saveAs(blob, filename);
         } catch (e) {
-            $('.error', appContext).html('<div class="alert alert-danger">Sorry, your browser does not support this feature. Please upgrade to a more modern browser.</div>');
+            $('.error', appContext).html(errorMessage('Sorry, your browser does not support this feature. Please upgrade to a more modern browser.'));
         }
     };
 
     var showGraphResults = function showGraphResults(json) {
         if ( ! (json && json.obj) ) {
-            $('.error', appContext).html('<div class="alert alert-danger">Invalid response!</div>');
+            $('.error', appContext).html(errorMessage('Invalid response!'));
             return;
         }
 
@@ -758,13 +765,13 @@
           $('.ebi_tv_progress', appContext).removeClass('hidden');
           resetButtonBar();
           Agave.api.adama.search({
-              'namespace': 'eriksf-dev',
+              'namespace': 'ebi',
               'service': 'ebi_intact_by_locus_v0.3',
               'queryParams': query
           }, showTableResults, showError);
 
           Agave.api.adama.search({
-              'namespace': 'eriksf-dev',
+              'namespace': 'ebi',
               'service': 'ebi_intact_cytoscape_by_locus_v0.4',
               'queryParams': query
           }, showGraphResults, showError);

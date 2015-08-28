@@ -17,6 +17,8 @@
             <li id="t_table"><a href="#d_table" role="tab" data-toggle="tab">Table <span class="ebi_tv_table_progress hidden"><i class="fa fa-refresh fa-spin"></i></span></a></li>
         </ul>
 
+        <div class="error"></div>
+
         <div id="ebi_tv_tab_content" class="tab-content">
             <div id="d_about" class="tab-pane fade">
                 <a href="http://www.ebi.ac.uk/intact" target="_blank"><img src="http://www.ebi.ac.uk/intact/images/IntAct_logo.png" alt="IntAct logo" height="64" /></a>
@@ -37,7 +39,7 @@
                 <p>To get started, enter either a gene symbol or AGI Locus identifier in the search box and click on the <strong>Submit</strong> button. At this point,
                 data will be loaded in two tabs labeled <strong>Graph</strong> and <strong>Table</strong>. The <strong>Graph</strong> tab contains the interaction data drawn in a network graph using <a href="http://js.cytoscape.org/" target="_blank">Cytoscape <i class="fa fa-external-link"></i></a>. The <strong>Table</strong> tab lists
                 all of the information about each interaction in table format.</p>
-                <h5>Additional Features (Graph)</h5>
+                <h5>Features (Graph)</h5>
                 <p>
                     <ul>
                         <li>Individual nodes can be moved around by clicking and dragging on a node.</li>
@@ -45,16 +47,28 @@
                         <li>Extra information about an interaction such as experiment, confidence score, and publication can be seen by hovering the pointer over an interaction (edge).</li>
                         <li>The graph can be zoomed in or out by placing the cursor over the graph and scrolling up or down with a mouse or trackpad.</li>
                         <li>There is a button bar beneath the graph that allows many graph manipulations including redrawing the graph, toggling the IDs between UniProt IDs and AGI Locus IDs,
-                            moving the node labels around, toggling the node or edge labels, showing a legend, changing the graph layout, and exporting the graph in PNG (image) or JSON format.</li>
+                            moving the node labels around, toggling the node or edge labels, showing a legend, changing the graph layout, and exporting the graph in PNG (image as shown), JSON (cytoscape) or CSV format.</li>
+                        <li>Export options:</li>
+                            <ul>
+                                <li>When exporting a PNG image, the graph will look exactly as it does on the screen.</li>
+                                <li>The PNG image is saved without prompting in the brower's current download location and the filename differs based on the browser used: Safari (Unknown), Chrome (download), Firefox (random string of characters).</li>
+                                <li>When exporting JSON or CSV data, the file is saved without prompting in the browser's current download location and the filename will be <b>ebi-intact-results-for-&lt;query&gt;.txt</b> (CSV) or <b>ebi-intact-graph-for-&lt;query&gt;.json</b> (JSON).
+                                    <em>Note: when using Safari for the Mac, the file data will be opened in a new tab or window and <b>File->Save As...</b> must be used to save the file.</em></li>
+                            </ul>
                     </ul>
                 </p>
-                <h5>Additional Features (Table)</h5>
+                <h5>Features (Table)</h5>
                 <p>
                     <ul>
                         <li>Sort the table by any column by clicking on the column header.</li>
                         <li>Change the columns that are shown by clicking on the <strong>Show / hide columns</strong> button and then selecting/de-selecting the columns.</li>
-                        <li>Export all of the interaction data in the table in tab-delimited format by clicking on the <strong>Export</strong> button.</li>
+                        <li>Export all of the interaction data in the table in tab-delimited format by clicking on the <strong>Export CSV</strong> button.</li>
                         <li>Filter the results further by entering text in the <strong>Search</strong> box in the upper-right of the table.</li>
+                        <li>Export options:</li>
+                        <ul>
+                            <li>When export CSV data, the file is saved without prompting in the browser's current download location and the filename will be <b>ebi-intact-results-for-&lt;query&gt;.txt</b>.
+                                <em>Note: when using Safari for the Mac, the file data will be opened in a new tab or window and <b>File->Save As...</b> must be used to save the file.</em></li>
+                        </ul>
                     </ul>
                 </p>
             </div>
@@ -139,13 +153,14 @@
                                         </ul>
                                     </div>
                                     <div class="btn-group">
-                                        <button title="Export the graph as a PNG image or JSON data" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button title="Export the graph as a PNG image or as JSON or CSV data" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     	        	    <i class="fa fa-floppy-o fa-fw"></i>&nbsp; Export
                                         <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a href="#exportPNG">PNG</a></li>
-                                            <li><a href="#exportJSON">JSON</a></li>
+                                            <li><a href="#exportPNG">PNG (Image as shown)</a></li>
+                                            <li><a href="#exportJSON">JSON (Cytoscape)</a></li>
+                                            <li><a href="#exportCSV">CSV (All interaction data)</a></li>
                                         </ul>
                                     </div>
 	                            </div>
@@ -159,8 +174,6 @@
                 <div class="ebi_tv_table_result"></div>
             </div>
         </div>
-
-        <div class="error"></div>
 
         <br>
 
