@@ -174,42 +174,25 @@
         $('.ebi_tv_table_progress', appContext).addClass('hidden');
         $('.ebi_tv_graph_progress', appContext).addClass('hidden');
         $('.ebi_tv_table_result', appContext).html(templates.resultTable(json.obj));
-        var iTable = $('.ebi_tv_table_result table', appContext).DataTable({'lengthMenu': [10, 25, 50, 100],
+        var filename = 'Interactions_for_';
+        if (json.obj.result[0]) {
+            filename += json.obj.result[0].locus;
+        } else {
+            filename += $('#locus_id', appContext).val();
+        }
+        $('.ebi_tv_table_result table', appContext).DataTable({'lengthMenu': [10, 25, 50, 100],
+                                                           'language': {
+                                                             'emptyTable': 'No interactions data available for this locus id.'
+                                                           },
+                                                           'buttons': [{'extend': 'csv', 'title': filename},
+                                                                       {'extend': 'excel', 'title': filename},
+                                                                       'colvis'],
+
                                                            'columnDefs': [{
                                                            'targets': [2,3,7,9,10,12],
                                                            'visible': false}],
+                                                           'dom': '<"row"<"col-sm-6"l><"col-sm-6"f<"button-row"B>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>'
                                                           });
-        var colvis = new $.fn.dataTable.ColVis(iTable, {'restore': 'Restore',
-                                                        'showAll': 'Show all',
-                                                        'showNone': 'Show none'}
-                                              );
-        $('div.ebi_tv_table_result', appContext).prepend('<a href="#exportCSV" class="export-button" role="button"><span>Export CSV</span></a>');
-        $('div.ebi_tv_table_result', appContext).prepend(colvis.button());
-
-        $('a[href="#exportCSV"]', appContext).on('click', function (e) {
-            e.preventDefault();
-            console.log('There are ' + iTable.data().length + ' row(s) of data in this table!');
-
-            var ts_content = '';
-            // get table headers
-            iTable.columns().every(function() {
-                ts_content += $(this.header()).text() + '\t';
-            });
-            ts_content += '\n';
-            // get table data
-            iTable.rows().every(function() {
-                var d = this.data();
-                for(var i=0;i<d.length;i++) {
-                    var t = $($.parseHTML(d[i])).text();
-                    ts_content += t + '\t';
-                }
-                ts_content += '\n';
-            });
-
-            var clean_locus = $.trim($('#ebi_tv_gene', appContext).val()).replace(/[^a-zA-Z0-9-_]/gi, '');
-            var filename = 'ebi-intact-results-for-' + clean_locus + '.txt';
-            saveAsFile(ts_content, 'text/plain;charset=utf-8', filename);
-        });
     };
 
     var saveAsFile = function saveAsFile(content, filetype, filename) {
@@ -748,6 +731,8 @@
         resetButtonBar();
         $('#ebi_tv_tooltip', appContext).empty();
         $('#ebi_tv_colors', appContext).empty();
+        // select the about tab
+        $('a[href="#d_about"]', appContext).tab('show');
       });
 
       $('form[name=ebi_tv_gene_form]').on('submit', function (e) {

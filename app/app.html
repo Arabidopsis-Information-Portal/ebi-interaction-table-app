@@ -12,7 +12,7 @@
         <br>
 
         <ul id="ebi_tv_tabs" class="nav nav-tabs" role="tablist">
-            <li id="t_about"><a href="#d_about" role="tab" data-toggle="tab">About</a></li>
+            <li id="t_about" class="active"><a href="#d_about" role="tab" data-toggle="tab">About</a></li>
             <li id="t_graph"><a href="#d_graph" role="tab" data-toggle="tab">Graph <span class="ebi_tv_graph_progress hidden"><i class="fa fa-refresh fa-spin"></i></span></a></li>
             <li id="t_table"><a href="#d_table" role="tab" data-toggle="tab">Table <span class="ebi_tv_table_progress hidden"><i class="fa fa-refresh fa-spin"></i></span></a></li>
         </ul>
@@ -20,7 +20,7 @@
         <div class="error"></div>
 
         <div id="ebi_tv_tab_content" class="tab-content">
-            <div id="d_about" class="tab-pane fade">
+            <div id="d_about" class="tab-pane fade in active">
                 <a href="http://www.ebi.ac.uk/intact" target="_blank"><img src="http://www.ebi.ac.uk/intact/images/IntAct_logo.png" alt="IntAct logo" height="64" /></a>
                 <p>This app displays molecular interaction data (in graph and table format) obtained by searching <a href="http://www.ebi.ac.uk/intact" target="_blank">IntAct <i class="fa fa-external-link"></i></a>, a public
                 repository where molecular interaction data is stored and accessed, hosted by the European Bioinformatics Institute (<a href="http://www.ebi.ac.uk" target="_blank">EMBL-EBI <i class="fa fa-external-link"></i></a>)
@@ -73,7 +73,7 @@
                 </p>
             </div>
 
-            <div id="d_graph" class="tab-pane fade in active">
+            <div id="d_graph" class="tab-pane fade">
                 <div class="ebi_tv_progress hidden">
                     <h4>Loading</h4>
                     <div class="progress progress-striped active">
