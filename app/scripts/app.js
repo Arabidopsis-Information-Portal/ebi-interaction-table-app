@@ -180,7 +180,7 @@
         } else {
             filename += $('#locus_id', appContext).val();
         }
-        $('.ebi_tv_table_result table', appContext).DataTable({'lengthMenu': [10, 25, 50, 100],
+        var iTable = $('.ebi_tv_table_result table', appContext).DataTable({'lengthMenu': [10, 25, 50, 100],
                                                            'language': {
                                                              'emptyTable': 'No interactions data available for this locus id.'
                                                            },
@@ -193,6 +193,31 @@
                                                            'visible': false}],
                                                            'dom': '<"row"<"col-sm-6"l><"col-sm-6"f<"button-row"B>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>'
                                                           });
+
+        $('a[href="#exportCSV"]', appContext).on('click', function (e) {
+          e.preventDefault();
+          console.log('There are ' + iTable.data().length + ' row(s) of data in this table!');
+
+          var ts_content = '';
+          // get table headers
+          iTable.columns().every(function() {
+            ts_content += $(this.header()).text() + '\t';
+          });
+          ts_content += '\n';
+          // get table data
+          iTable.rows().every(function() {
+            var d = this.data();
+            for(var i=0;i<d.length;i++) {
+              var t = $($.parseHTML(d[i])).text();
+              ts_content += t + '\t';
+            }
+            ts_content += '\n';
+          });
+
+          var clean_locus = $.trim($('#ebi_tv_gene', appContext).val()).replace(/[^a-zA-Z0-9-_]/gi, '');
+          var filename = 'ebi-intact-results-for-' + clean_locus + '.txt';
+          saveAsFile(ts_content, 'text/plain;charset=utf-8', filename);
+        });
     };
 
     var saveAsFile = function saveAsFile(content, filetype, filename) {
