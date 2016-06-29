@@ -1,0 +1,16 @@
+{
+  "namespace" : "ebi-interaction-viewer-app",
+  "name": "EBI IntAct Viewer",
+  "description": "Display molecular interaction data (in graph and table format) obtained by searching the IntAct repository.",
+  "html": "app.html",
+  "scripts": [
+    "scripts/app.js"
+  ],
+  "styles": [
+    "styles/app.css"
+  ],
+  "tags": [
+    "EBI", "arabidopsis", "interactions"
+  ],
+  "icon": "app/images/logo.png"
+}
