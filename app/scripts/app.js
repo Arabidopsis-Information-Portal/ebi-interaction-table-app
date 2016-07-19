@@ -172,7 +172,6 @@
         }
 
         $('.ebi_tv_table_progress', appContext).addClass('hidden');
-        $('.ebi_tv_graph_progress', appContext).addClass('hidden');
         $('.ebi_tv_table_result', appContext).html(templates.resultTable(json.obj));
         var filename = 'Interactions_for_';
         if (json.obj.result[0]) {
@@ -240,6 +239,7 @@
         }
 
         $('.ebi_tv_progress', appContext).addClass('hidden');
+        $('.ebi_tv_graph_progress', appContext).addClass('hidden');
         var view = assignViewOptions(json.obj);
         renderCytoscape(view);
         renderLegend(view.keyInfo);
@@ -748,6 +748,9 @@
     registerButtonBar();
 
     $('#ebi_tv_gene_form_reset').on('click', function () {
+        $('.ebi_tv_progress', appContext).addClass('hidden');
+        $('.ebi_tv_table_progress', appContext).addClass('hidden');
+        $('.ebi_tv_graph_progress', appContext).addClass('hidden');
         $('.error', appContext).empty();
         $('#ebi_tv_gene', appContext).val('');
         $('.ebi_tv_table_result', appContext).empty();
