@@ -263,19 +263,19 @@
    var resetButtonBar = function resetButtonBar() {
         var label_button = $('button[name=labelButton]', appContext);
         label_button.data('label', 'locus');
-        label_button.html('<i class="fa fa-tags fa-fw"></i>&nbsp; Locus');
+        label_button.html('<i class="fa fa-tags fa-fw"></i>&nbsp; <span class="button-bar-text">Locus</span>');
         var vtext_button = $('button[name=verticalTextAlignButton]', appContext);
         vtext_button.data('label', 'top');
-        vtext_button.html('<i class="fa fa-text-height fa-fw"></i>&nbsp; Top');
+        vtext_button.html('<i class="fa fa-text-height fa-fw"></i>&nbsp; <span class="button-bar-text">Top</span>');
         var htext_button = $('button[name=horizontalTextAlignButton]', appContext);
         htext_button.data('label', 'center');
-        htext_button.html('<i class="fa fa-text-width fa-fw"></i>&nbsp; Center');
+        htext_button.html('<i class="fa fa-text-width fa-fw"></i>&nbsp; <span class="button-bar-text">Center</span>');
         var node_button = $('button[name=viewNodeLabelButton]', appContext);
         node_button.data('visible', true);
-        node_button.html('<i class="fa fa-check-square fa-fw"></i>&nbsp; Node Labels');
+        node_button.html('<i class="fa fa-check-square fa-fw"></i>&nbsp; <span class="button-bar-text">Node Labels</span>');
         var edge_button = $('button[name=viewEdgeLabelButton]', appContext);
         edge_button.data('visible', false);
-        edge_button.html('<i class="fa fa-square fa-fw"></i>&nbsp; Edge Labels');
+        edge_button.html('<i class="fa fa-square fa-fw"></i>&nbsp; <span class="button-bar-text">Edge Labels</span>');
    };
 
     var registerButtonBar = function registerButtonBar() {
@@ -302,11 +302,11 @@
             if (current_label === 'locus') {
                 new_label = 'name';
                 el.data('label', new_label);
-                el.html('<i class="fa fa-tags fa-fw"></i>&nbsp; ID');
+                el.html('<i class="fa fa-tags fa-fw"></i>&nbsp; <span class="button-bar-text">ID</span>');
             } else if (current_label === 'name') {
                 new_label = 'locus';
                 el.data('label', new_label);
-                el.html('<i class="fa fa-tags fa-fw"></i>&nbsp; Locus');
+                el.html('<i class="fa fa-tags fa-fw"></i>&nbsp; <span class="button-bar-text">Locus</span>');
             }
             var cy = $('#ebi_tv_cy', appContext).cytoscape('get');
             cy.batch(function() {
@@ -326,15 +326,15 @@
             if (current_label === 'top') {
                 new_label = 'center';
                 el.data('label', new_label);
-                el.html('<i class="fa fa-text-height fa-fw"></i>&nbsp; Center');
+                el.html('<i class="fa fa-text-height fa-fw"></i>&nbsp; <span class="button-bar-text">Center</span>');
             } else if (current_label === 'center') {
                 new_label = 'bottom';
                 el.data('label', new_label);
-                el.html('<i class="fa fa-text-height fa-fw"></i>&nbsp; Bottom');
+                el.html('<i class="fa fa-text-height fa-fw"></i>&nbsp; <span class="button-bar-text">Bottom</span>');
             } else if (current_label === 'bottom') {
                 new_label = 'top';
                 el.data('label', new_label);
-                el.html('<i class="fa fa-text-height fa-fw"></i>&nbsp; Top');
+                el.html('<i class="fa fa-text-height fa-fw"></i>&nbsp; <span class="button-bar-text">Top</span>');
             }
             var cy = $('#ebi_tv_cy', appContext).cytoscape('get');
             cy.batch(function() {
@@ -353,15 +353,15 @@
             if (current_label === 'center') {
                 new_label = 'left';
                 el.data('label', new_label);
-                el.html('<i class="fa fa-text-width fa-fw"></i>&nbsp; Left');
+                el.html('<i class="fa fa-text-width fa-fw"></i>&nbsp; <span class="button-bar-text">Left</span>');
             } else if (current_label === 'left') {
                 new_label = 'right';
                 el.data('label', new_label);
-                el.html('<i class="fa fa-text-width fa-fw"></i>&nbsp; Right');
+                el.html('<i class="fa fa-text-width fa-fw"></i>&nbsp; <span class="button-bar-text">Right</span>');
             } else if (current_label === 'right') {
                 new_label = 'center';
                 el.data('label', new_label);
-                el.html('<i class="fa fa-text-width fa-fw"></i>&nbsp; Center');
+                el.html('<i class="fa fa-text-width fa-fw"></i>&nbsp; <span class="button-bar-text">Center</span>');
             }
             var cy = $('#ebi_tv_cy', appContext).cytoscape('get');
             cy.batch(function() {
@@ -378,10 +378,10 @@
             var view = el.data('visible');
             if (view) {
                 el.data('visible', false);
-                el.html('<i class="fa fa-square fa-fw"></i>&nbsp; Node Labels');
+                el.html('<i class="fa fa-square fa-fw"></i>&nbsp; <span class="button-bar-text">Node Labels</span>');
             } else {
                 el.data('visible', true);
-                el.html('<i class="fa fa-check-square fa-fw"></i>&nbsp; Node Labels');
+                el.html('<i class="fa fa-check-square fa-fw"></i>&nbsp; <span class="button-bar-text">Node Labels</span>');
             }
             var cy = $('#ebi_tv_cy', appContext).cytoscape('get');
             cy.batch(function() {
@@ -405,10 +405,10 @@
             var view = el.data('visible');
             if (view) {
                 el.data('visible', false);
-                el.html('<i class="fa fa-square fa-fw"></i>&nbsp; Edge Labels');
+                el.html('<i class="fa fa-square fa-fw"></i>&nbsp; <span class="button-bar-text">Edge Labels</span>');
             } else {
                 el.data('visible', true);
-                el.html('<i class="fa fa-check-square fa-fw"></i>&nbsp; Edge Labels');
+                el.html('<i class="fa fa-check-square fa-fw"></i>&nbsp; <span class="button-bar-text">Edge Labels</span>');
             }
             var cy = $('#ebi_tv_cy', appContext).cytoscape('get');
             cy.batch(function() {
@@ -426,12 +426,12 @@
         $('#ebi_tv_legend', appContext).on('shown.bs.collapse', function (e) {
             e.preventDefault();
             var legend_button = $('button[name=legendButton]', appContext);
-            legend_button.html('<i class="fa fa-check-square fa-fw"></i>&nbsp; Legend');
+            legend_button.html('<i class="fa fa-check-square fa-fw"></i>&nbsp; <span class="button-bar-text">Legend</span>');
         });
         $('#ebi_tv_legend', appContext).on('hidden.bs.collapse', function (e) {
             e.preventDefault();
             var legend_button = $('button[name=legendButton]', appContext);
-            legend_button.html('<i class="fa fa-square fa-fw"></i>&nbsp; Legend');
+            legend_button.html('<i class="fa fa-square fa-fw"></i>&nbsp; <span class="button-bar-text">Legend</span>');
         });
 
         // export the graph as a PNG image
@@ -779,15 +779,14 @@
           resetButtonBar();
           Agave.api.adama.search({
               'namespace': 'ebi',
-              'service': 'ebi_intact_by_locus_v0.3',
-              'queryParams': query
-          }, showTableResults, showError);
-
-          Agave.api.adama.search({
-              'namespace': 'ebi',
               'service': 'ebi_intact_cytoscape_by_locus_v0.4',
               'queryParams': query
           }, showGraphResults, showError);
+          Agave.api.adama.search({
+              'namespace': 'ebi',
+              'service': 'ebi_intact_by_locus_v0.3',
+              'queryParams': query
+          }, showTableResults, showError);
       });
 
   });

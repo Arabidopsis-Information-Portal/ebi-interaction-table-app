@@ -15,3 +15,7 @@
 .button-row {
     float: right;
 }
+
+.button-bar-text {
+    font-size: smaller;
+}
